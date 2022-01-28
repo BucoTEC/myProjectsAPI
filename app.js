@@ -3,13 +3,14 @@ import mongoose from "mongoose";
 import Project from "./models/project.js";
 import dotenv from "dotenv";
 import authenticated from "./midlewar/auth.js";
+import cors from "cors";
 //Config
 const app = express();
 dotenv.config();
 
 //Middlewar
 app.use(express.json());
-
+app.use(cors());
 //Routes
 
 //Unos podataka
@@ -27,13 +28,13 @@ app.post("/", authenticated, async (req, res) => {
 app.get("/", async (req, res) => {
   const { cat } = req.query;
   try {
-    if (cat) {
+    if (cat === "all") {
+      const allProjects = await Project.find();
+      return res.status(200).json(allProjects);
+    } else {
       const catProjects = await Project.find({ cat });
       res.json(catProjects);
     }
-
-    const allProjects = await Project.find();
-    res.status(200).json(allProjects);
   } catch (err) {
     res.send(`Ups there was an error: ${err.message}`);
   }
