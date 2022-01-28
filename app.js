@@ -31,9 +31,11 @@ app.get("/", async (req, res) => {
     if (cat === "all") {
       const allProjects = await Project.find();
       return res.status(200).json(allProjects);
-    } else {
+    } else if (cat) {
       const catProjects = await Project.find({ cat });
       res.json(catProjects);
+    } else {
+      throw new Error("Path must have query params!");
     }
   } catch (err) {
     res.send(`Ups there was an error: ${err.message}`);
