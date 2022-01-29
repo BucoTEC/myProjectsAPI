@@ -7,7 +7,7 @@ import cors from "cors";
 //Config
 const app = express();
 dotenv.config();
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static("public"));
 //Middlewar
 
 app.use(express.json());
